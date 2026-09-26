@@ -1,0 +1,174 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/playfair-display';
+@import '@fontsource-variable/playfair-display/wght-italic.css';
+@import '@fontsource-variable/plus-jakarta-sans';
+
+@theme {
+  --color-rose: #f4a6b8;
+  --color-rose-soft: #f9cdd7;
+  --color-gold: #d4af37;
+  --color-sage: #9bb0a5;
+  --color-ink: #0d111a;
+  --color-surface: #141a26;
+  --color-surface-2: #1b2231;
+
+  --font-serif: 'Playfair Display Variable', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans Variable', system-ui, sans-serif;
+
+  --animate-fade-up: fade-up 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-fade-in: fade-in 0.6s ease-out both;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+html {
+  background: var(--color-ink);
+  color-scheme: dark;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Sin fondo propio: el de <html> basta y así el cielo estrellado (z-index negativo) queda visible */
+body {
+  min-height: 100dvh;
+  color: #e8e4ee;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Tarjeta base usada en ambas pantallas */
+.card {
+  background: color-mix(in oklab, var(--color-surface) 82%, transparent);
+  border: 1px solid rgb(255 255 255 / 0.07);
+  border-radius: 1.25rem;
+  backdrop-filter: blur(6px);
+}
+
+/* Acordeón / carta: anima la altura sin medir el DOM */
+.reveal {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.4s ease;
+}
+.reveal[data-open='true'] {
+  grid-template-rows: 1fr;
+}
+.reveal > * {
+  overflow: hidden;
+}
+
+/* Estrellas */
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.15;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+.star {
+  animation: twinkle var(--dur) ease-in-out var(--delay) infinite;
+}
+
+/* Pétalos */
+@keyframes petal-fall {
+  0% {
+    transform: translate3d(0, -12vh, 0) rotate(0deg);
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  50% {
+    transform: translate3d(calc(var(--drift) * -0.6), 50vh, 0) rotate(calc(var(--rot) * 0.5));
+  }
+  100% {
+    transform: translate3d(var(--drift), 112vh, 0) rotate(var(--rot));
+    opacity: 0.8;
+  }
+}
+.petal {
+  animation: petal-fall var(--dur) cubic-bezier(0.35, 0.1, 0.6, 1) var(--delay) both;
+}
+
+/* Vela */
+@keyframes flicker {
+  0%,
+  100% {
+    transform: scale(1, 1) rotate(-1deg);
+  }
+  50% {
+    transform: scale(0.94, 1.06) rotate(1.5deg);
+  }
+}
+.flame {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: flicker 0.9s ease-in-out infinite;
+}
+@keyframes smoke {
+  from {
+    opacity: 0.6;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-28px) scale(1.8);
+  }
+}
+.smoke {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: smoke 1.6s ease-out both;
+}
+
+/* Ecualizador del reproductor */
+@keyframes eq {
+  0%,
+  100% {
+    transform: scaleY(0.3);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+.eq-bar {
+  transform-origin: bottom;
+  animation: eq 0.9s ease-in-out infinite;
+  animation-play-state: paused;
+}
+.eq-bar[data-on='true'] {
+  animation-play-state: running;
+}
+
+input[type='range'] {
+  accent-color: var(--color-rose);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .star,
+  .flame,
+  .eq-bar {
+    animation: none;
+  }
+  .petal {
+    display: none;
+  }
+}
