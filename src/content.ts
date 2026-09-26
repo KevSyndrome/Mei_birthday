@@ -58,7 +58,7 @@ export const portal = {
     ],
     signoff: 'Con todo mi cariño',
     // Tu nombre o apodo para firmar. Si lo dejas vacío, no se muestra.
-    from: '',
+    from: 'Kev',
     closeButton: 'Guardar la carta',
   },
 
