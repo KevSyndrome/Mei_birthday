@@ -1,4 +1,4 @@
-import { Headphones, Pause, Play, SkipBack, SkipForward } from 'lucide-react'
+import { Headphones, Music, Pause, Play, SkipBack, SkipForward } from 'lucide-react'
 import { portal } from '../content'
 import type { Playlist } from '../hooks/usePlaylist'
 
@@ -101,6 +101,31 @@ export function MusicPlayer({ p }: { p: Playlist }) {
         </div>
       )}
     </section>
+  )
+}
+
+/** Botón flotante: siempre a mano para poner o pausar la música mientras recorre la página. */
+export function MusicFab({ p }: { p: Playlist }) {
+  if (p.status !== 'ready' || p.needsTap) return null
+  return (
+    <button
+      type="button"
+      onClick={p.toggle}
+      aria-label={p.playing ? 'Pausar música' : 'Poner música'}
+      className="fixed right-4 bottom-[calc(1rem+env(safe-area-inset-bottom,0px))] z-30 flex h-12 animate-fade-in items-center gap-2 rounded-full border border-rose/30 bg-surface/90 px-4 text-sm text-rose shadow-lg shadow-black/40 backdrop-blur transition active:scale-95"
+    >
+      {p.playing ? (
+        <>
+          <Equalizer on />
+          <Pause size={16} strokeWidth={1.75} />
+        </>
+      ) : (
+        <>
+          <Music size={16} strokeWidth={1.75} />
+          {portal.music.fab}
+        </>
+      )}
+    </button>
   )
 }
 

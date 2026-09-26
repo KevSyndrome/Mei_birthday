@@ -55,9 +55,15 @@ export function usePlaylist(songs: Song[]) {
       setTracks((t) => (t ? [...t] : t)) // fuerza recarga aunque solo haya 1 canción
       setIndex((i) => i + 1)
     }
-    // Archivo corrupto o formato no soportado: se quita de la lista
+    // Formato no soportado o archivo corrupto: se quita de la lista.
+    // Un fallo de red (internet inestable) no la quita; basta volver a darle play.
     const onError = () => {
       if (!audio.getAttribute('src')) return
+      const code = audio.error?.code
+      if (code === MediaError.MEDIA_ERR_NETWORK || code === MediaError.MEDIA_ERR_ABORTED) {
+        setPlaying(false)
+        return
+      }
       setTracks((t) => t?.filter((_, i) => i !== indexRef.current % t.length) ?? t)
     }
 
@@ -87,6 +93,8 @@ export function usePlaylist(songs: Song[]) {
     const audio = audioRef.current
     if (!audio) return
     wantsPlay.current = true
+    // Si antes falló la red, recarga la canción antes de reintentar
+    if (audio.error) audio.load()
     audio
       .play()
       .then(() => setNeedsTap(false))

@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { NAME, portal, songs } from '../content'
 import { usePlaylist } from '../hooks/usePlaylist'
 import { Letter } from './Letter'
-import { MusicGate, MusicPlayer } from './MusicPlayer'
+import { MusicFab, MusicGate, MusicPlayer } from './MusicPlayer'
 import { Petals } from './Petals'
 import { WishCake } from './WishCake'
 
@@ -32,7 +32,7 @@ export function Portal() {
 
   return (
     <>
-      <main className="mx-auto flex min-h-dvh w-full max-w-xl animate-fade-in flex-col gap-5 px-4 pt-8 pb-14 sm:px-6 sm:pt-14 lg:max-w-5xl">
+      <main className="mx-auto flex min-h-dvh w-full max-w-xl animate-fade-in flex-col gap-5 px-4 pt-8 pb-28 sm:px-6 sm:pt-14 lg:max-w-5xl">
         <section className="flex animate-fade-up flex-col items-center gap-4 py-6 text-center lg:py-10">
           <span className="rounded-full border border-gold/30 px-3 py-1 text-[10px] tracking-[0.25em] text-gold uppercase">
             {portal.dateLabel}
@@ -90,6 +90,7 @@ export function Portal() {
       </main>
 
       <Petals bursts={bursts} onDone={clear} />
+      <MusicFab p={playlist} />
       <MusicGate p={playlist} />
     </>
   )

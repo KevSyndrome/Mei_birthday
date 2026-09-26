@@ -83,6 +83,7 @@ export const portal = {
     gateText: 'Sube un poco el volumen.',
     gatePlay: 'Tocar para escuchar',
     gateSkip: 'Continuar sin música',
+    fab: 'Poner música',
   },
 }
 
